@@ -1,5 +1,5 @@
-const registerUser = require("../../use-case/user/registerUser");
-const loginUser = require("../../use-case/user/loginUser");
+import { registerUser } from '../../use-case/user/registerUser.js';
+import { loginUser } from '../../use-case/user/loginUser.js';
 
 
 const register = async (req, res) => {
@@ -30,5 +30,4 @@ const login = async (req, res) => {
     res.status(401).json({ error: error.message });
   }
 };
-
-module.exports = { register, registerAdmin, login };
+export { register, registerAdmin, login };

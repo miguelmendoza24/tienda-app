@@ -1,11 +1,11 @@
 class User{
-  constructor({ id, name, email, pasword, rol = 'cliente' }) {
+  constructor({ id, name, email, password, rol = 'cliente' }) {
     this.id = id;
     this.name = name;
     this.email = email;
-    this.pasword = pasword;
+    this.password = password;
     this.rol = rol;
   }
 }
 
-module.exports = User;
+export default User;

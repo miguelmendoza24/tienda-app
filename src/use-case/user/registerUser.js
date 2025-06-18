@@ -1,14 +1,15 @@
-const { hashPassword } = require('../../infrastructure/services/hashService');
-const userModel = require('../../infrastructure/db/models/userModel')
+import { hashPassword } from '../../infrastructure/services/hashService.js';
+import UserModel from '../../infrastructure/db/models/userModel.js';
 
-async function registerUser({ name, email, password, rol }) {
-  const existingUser = await userModel.findOne({ email });
+
+export const registerUser = async ({ name, email, password, rol }) => {
+  const existingUser = await UserModel.findOne({ email });
   if (existingUser) {
     throw new Error('El usuario ya existe');
   }
 
   const hashedPassword = await hashPassword(password);
-  const user = new userModel({
+  const user = new UserModel({
     name,
     email,
     password: hashedPassword,
@@ -16,6 +17,4 @@ async function registerUser({ name, email, password, rol }) {
   });
   await user.save();
   return user;
-}
-
-module.exports = registerUser;
+};
