@@ -1,3 +1,4 @@
+import User from '../../domain/entities/user.js';
 import { hashPassword } from '../../infrastructure/services/hashService.js';
 import UserModel from '../../infrastructure/db/models/userModel.js';
 
@@ -9,12 +10,15 @@ export const registerUser = async ({ name, email, password, rol }) => {
   }
 
   const hashedPassword = await hashPassword(password);
-  const user = new UserModel({
+  const userEntity = new User({
+    id:undefined,
     name,
     email,
     password: hashedPassword,
     rol,
   });
+  const user = new UserModel(userEntity)
   await user.save();
+  
   return user;
 };

@@ -2,11 +2,17 @@ import 'dotenv/config.js'
 import express from 'express'
 import mongoose from 'mongoose';
 import userRoutes from './src/interfaces/routes/userRoutes.js'
+import productRoutes from './src/interfaces/routes/productRoutes.js'
+import passport from 'passport';
+import './src/interfaces/middleware/passport.js'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(passport.initialize());
+
 app.use(express.json());
+app.use("/product", productRoutes)
 app.use("/user", userRoutes);
 
 const startServer = async () => {
@@ -22,26 +28,3 @@ const startServer = async () => {
   }
 };
 startServer();
-/*
-{
-  "name": "Lucía Torres",
-  "email": "lucia.torres@example.com",
-  "password": "MiPassword123"
-}
-  {
-  "name": "Carlos Méndez",
-  "email": "carlos.admin@example.com",
-  "password": "AdminPower456"
-}
-
-{
-  "email": "lucia.torres@example.com",
-  "password": "MiPassword123"
-}
-
-{
-  "email": "carlos.admin@example.com",
-  "password": "AdminPower456"
-}
-
- */
