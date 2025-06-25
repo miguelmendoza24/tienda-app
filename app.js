@@ -3,8 +3,10 @@ import express from 'express'
 import mongoose from 'mongoose';
 import userRoutes from './src/interfaces/routes/userRoutes.js'
 import productRoutes from './src/interfaces/routes/productRoutes.js'
+import purchaseRoutes from './src/interfaces/routes/purchaseRoutes.js'
 import passport from 'passport';
 import './src/interfaces/middleware/passport.js'
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,8 +14,9 @@ const PORT = process.env.PORT || 3000;
 app.use(passport.initialize());
 
 app.use(express.json());
-app.use("/product", productRoutes)
+app.use("/product", productRoutes);
 app.use("/user", userRoutes);
+app.use('/purchase', purchaseRoutes);
 
 const startServer = async () => {
   try {
