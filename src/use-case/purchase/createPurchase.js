@@ -1,25 +1,41 @@
 import ProductModel from '../../infrastructure/db/models/productModel.js';
 import Purchase from '../../domain/entities/purchase.js';
 import PurchaseModel from '../../infrastructure/db/models/purchaseModel.js'
+import mongoose from 'mongoose';
 
 export const createPurchase = async ({ code, userId, quantity }) => {
-  const product = await ProductModel.findOne({ code });
-  if (!product) {
-    throw new Error('Product not found')
-  }
-  if (product.stock < quantity) {
-    throw new Error('Insufficient estock')
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  product.stock -= quantity;
-  await product.save();
 
-  const purchaseEntity = new Purchase({
-    productId: product._id,
-    userId,
-    quantity,
-  });
-  const purchase = new PurchaseModel(purchaseEntity);
-  await purchase.save()
-  return purchase;
-}
+  try {
+    const product = await ProductModel.findOne({ code }).session(session);
+    if (!product) {
+      throw new Error('Product not found')
+    }
+    if (product.stock < quantity) {
+      throw new Error('Insufficient stock')
+    }
+    
+    product.stock -= quantity;
+    await product.save({ session });
+    
+    const purchaseEntity = new Purchase({
+      productId: product._id,
+      userId,
+      quantity,
+    });
+    const purchase = new PurchaseModel(purchaseEntity);
+    await purchase.save({ session });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return purchase;
+    
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};

@@ -1,33 +1,27 @@
 import 'dotenv/config.js'
 import express from 'express'
-import mongoose from 'mongoose';
 import userRoutes from './src/interfaces/routes/userRoutes.js'
 import productRoutes from './src/interfaces/routes/productRoutes.js'
 import purchaseRoutes from './src/interfaces/routes/purchaseRoutes.js'
 import passport from 'passport';
 import './src/interfaces/middleware/passport.js'
+import { connectDB } from './src/infrastructure/db/mongo.js';
 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(express.json());
 app.use(passport.initialize());
 
-app.use(express.json());
 app.use("/product", productRoutes);
 app.use("/user", userRoutes);
 app.use('/purchase', purchaseRoutes);
 
 const startServer = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB connected')
-    
+    await connectDB();
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
-  } catch (error) {
-    console.log('Error connecting to MongoDB', error.message);
-  }
 };
 startServer();
