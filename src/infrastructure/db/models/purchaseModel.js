@@ -17,7 +17,7 @@ const purchaseSchema = new mongoose.Schema({
   },
   date: {
     type: Date,
-    defaul: Date.now,
+    default: Date.now,
   }
 });
 

@@ -2,7 +2,7 @@ import { createPurchase as registerPurchase } from "../../use-case/purchase/crea
 import {deletePurchase as removePurchase } from '../../use-case/purchase/deletePurchase.js'
 import { updatePurchase as editPurchase } from '../../use-case/purchase/updatePurchase.js'
 import { getPurchases } from "../../use-case/purchase/getPurchase.js";
-import { getPurchaseByUser } from "../../use-case/purchase/getMyPurchase.js";
+import {getUserPurchase} from '../../use-case/purchase/getUserPurchase.js'
 
 
 export const createPurchase = async (req, res) => {
@@ -59,8 +59,8 @@ export const listPurchases = async (req, res) => {
 
 export const getClientPurchases = async (req, res) => {
   try {
-    const user = req.user.id;
-    const purchases = await getPurchaseByUser(user);
+    const { id } = req.params;
+    const purchases = await getUserPurchase(id);
     res.status(200).json(purchases);
   } catch (error) {
     res.status(400).json({ error: error.message });
