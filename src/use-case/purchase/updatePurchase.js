@@ -7,7 +7,7 @@ export const updatePurchase = async (id, updatedData) => {
     throw new Error("Purchase not found");
   }
 
-  const product = await ProductModel.findById(existingPurchase.productId);
+  const product = await ProductModel.findById(existingPurchase.product);
   if (!product) {
     throw new Error("Associated product not found");
   }

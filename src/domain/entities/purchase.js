@@ -1,7 +1,7 @@
 class Purchase{
-  constructor({ productId, userId, quantity, date = new Date() }) {
-    this.productId = productId;
-    this.userId = userId;
+  constructor({ product, user, quantity, date = new Date() }) {
+    this.product = product;
+    this.user = user;
     this.quantity = quantity;
     this.date = date;
   }

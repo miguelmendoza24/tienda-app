@@ -3,7 +3,7 @@ import Purchase from '../../domain/entities/purchase.js';
 import PurchaseModel from '../../infrastructure/db/models/purchaseModel.js'
 import mongoose from 'mongoose';
 
-export const createPurchase = async ({ code, userId, quantity }) => {
+export const createPurchase = async ({ code, user, quantity }) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -21,8 +21,8 @@ export const createPurchase = async ({ code, userId, quantity }) => {
     await product.save({ session });
     
     const purchaseEntity = new Purchase({
-      productId: product._id,
-      userId,
+      product: product._id,
+      user,
       quantity,
     });
     const purchase = new PurchaseModel(purchaseEntity);

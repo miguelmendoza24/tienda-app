@@ -6,7 +6,7 @@ export const deletePurchase = async (id) => {
   if (!purchase) {
     throw new Error("Purchase not found");
   }
-  const product = await ProductModel.findById(purchase.productId);
+  const product = await ProductModel.findById(purchase.product);
   if (!product) {
     throw new Error("Associated product not found");
   }

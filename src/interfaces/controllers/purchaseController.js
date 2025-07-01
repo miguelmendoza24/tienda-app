@@ -2,14 +2,15 @@ import { createPurchase as registerPurchase } from "../../use-case/purchase/crea
 import {deletePurchase as removePurchase } from '../../use-case/purchase/deletePurchase.js'
 import { updatePurchase as editPurchase } from '../../use-case/purchase/updatePurchase.js'
 import { getPurchases } from "../../use-case/purchase/getPurchase.js";
+import { getPurchaseByUser } from "../../use-case/purchase/getMyPurchase.js";
 
 
 export const createPurchase = async (req, res) => {
   try {
     const { code, quantity } = req.body;
-    const userId = req.user.id;
+    const user = req.user.id;
 
-    const purchase = await registerPurchase({ code, userId, quantity });
+    const purchase = await registerPurchase({ code, user, quantity });
     res.status(200).json({
       message: "Purchase successful",
       purchase,
@@ -53,5 +54,15 @@ export const listPurchases = async (req, res) => {
     res.status(200).json(purchases);
   } catch (error) {
     res.status(500).json({ error: error.message });
+  }
+};
+
+export const getClientPurchases = async (req, res) => {
+  try {
+    const user = req.user.id;
+    const purchases = await getPurchaseByUser(user);
+    res.status(200).json(purchases);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
   }
 };
