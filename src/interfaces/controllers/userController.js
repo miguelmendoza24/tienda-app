@@ -4,7 +4,7 @@ import { loginUser } from '../../use-case/user/loginUser.js';
 
 const register = async (req, res) => {
   try {
-    const user = await registerUser({ ...req.body, rol:'customer' });
+    const user = await registerUser({ ...req.body, role:'customer' });
     res.status(201).json({message:'Usuario creado', user})
   } catch (error) {
     res.status(400).json({error: error.message})
@@ -14,7 +14,7 @@ const register = async (req, res) => {
 
 const registerAdmin = async (req, res) => {
   try {
-    const user = await registerUser({ ...req.body, rol: 'admin' });
+    const user = await registerUser({ ...req.body, role: 'admin' });
     res.status(201).json({message: 'administrador creado', user })
   } catch (error) {
     res.status(400).json({error: error.message})

@@ -6,13 +6,15 @@ import purchaseRoutes from './src/interfaces/routes/purchaseRoutes.js'
 import passport from 'passport';
 import './src/interfaces/middleware/passport.js'
 import { connectDB } from './src/infrastructure/db/mongo.js';
-
+import cors from 'cors'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors({ origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(passport.initialize());
+
 
 app.use("/product", productRoutes);
 app.use("/user", userRoutes);

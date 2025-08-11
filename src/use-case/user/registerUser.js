@@ -3,7 +3,7 @@ import { hashPassword } from '../../infrastructure/services/hashService.js';
 import UserModel from '../../infrastructure/db/models/userModel.js';
 
 
-export const registerUser = async ({ name, email, password, rol }) => {
+export const registerUser = async ({ name, email, password, role }) => {
   const existingUser = await UserModel.findOne({ email });
   if (existingUser) {
     throw new Error('El usuario ya existe');
@@ -15,7 +15,7 @@ export const registerUser = async ({ name, email, password, rol }) => {
     name,
     email,
     password: hashedPassword,
-    rol,
+    role,
   });
   const user = new UserModel(userEntity)
   await user.save();
