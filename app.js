@@ -7,11 +7,14 @@ import passport from 'passport';
 import './src/interfaces/middleware/passport.js'
 import { connectDB } from './src/infrastructure/db/mongo.js';
 import cors from 'cors';
-
-
+import path from 'path';
+import { fileURLToPath } from 'url'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
 
 
 
@@ -24,9 +27,11 @@ app.use("/product", productRoutes);
 app.use("/user", userRoutes);
 app.use('/purchase', purchaseRoutes);
 
-app.use(express.static( "public"));
+app.use(express.static(path.join(__dirname, "public")));
 
-
+app.get("*",  (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 const startServer = async () => {
     await connectDB();
